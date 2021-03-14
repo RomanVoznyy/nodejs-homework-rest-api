@@ -11,6 +11,7 @@ const schemaCreateUser = Joi.object({
     .required(),
   password: Joi.string().min(8).required(),
   subscription: Joi.string(),
+  avatar: Joi.string(),
 });
 
 const schemaLoginUser = Joi.object({
@@ -33,6 +34,7 @@ const schemaUpdateUser = Joi.object({
     .optional(),
   password: Joi.string().min(8).optional(),
   subscription: Joi.string().optional(),
+  avatar: Joi.string().optional(),
 });
 
 const schemaUpdateSubscription = Joi.object({
@@ -57,18 +59,23 @@ const validate = (schema, obj, next) => {
   next();
 };
 
-module.exports.createUser = (req, _res, next) => {
-  validate(schemaCreateUser, req.body, next);
+const validateUpdateAvatar = (req, res, next) => {
+  if (!req.file) {
+    return res.status(StatusCode.BAD_REQUEST).json({
+      status: 'error',
+      code: StatusCode.BAD_REQUEST,
+      data: 'Bad request',
+      message: 'File not found',
+    });
+  }
+  next();
 };
 
-module.exports.loginUser = (req, _res, next) => {
-  validate(schemaLoginUser, req.body, next);
-};
-
-module.exports.updateUser = (req, _res, next) => {
-  validate(schemaUpdateUser, req.body, next);
-};
-
-module.exports.updateSubscription = (req, _res, next) => {
-  validate(schemaUpdateSubscription, req.body, next);
+module.exports = {
+  createUser: (req, _res, next) => validate(schemaCreateUser, req.body, next),
+  loginUser: (req, _res, next) => validate(schemaLoginUser, req.body, next),
+  updateUser: (req, _res, next) => validate(schemaUpdateUser, req.body, next),
+  updateSubscription: (req, _res, next) =>
+    validate(schemaUpdateSubscription, req.body, next),
+  updateAvatar: (req, res, next) => validateUpdateAvatar(req, res, next),
 };
