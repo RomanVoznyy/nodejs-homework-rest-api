@@ -10,6 +10,13 @@ StatusCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+FolderName = {
+  UPLOAD: 'tmp',
+  PUBLIC: 'public',
+  AVATARSSTORE: 'images',
+};
+
 module.exports = {
   StatusCode,
+  FolderName,
 };
