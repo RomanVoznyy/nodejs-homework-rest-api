@@ -16,13 +16,13 @@ const apiLimiter = rateLimit({
 
 const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 2,
+  max: 5,
   handler: (_req, res, _next) => {
     return res.status(StatusCode.BAD_REQUEST).json({
       status: 'error',
       code: StatusCode.BAD_REQUEST,
       data: 'Bad request',
-      message: 'Too many registration. No more than 2 per hour from 1 IP',
+      message: 'Too many registration. No more than 5 per hour from 1 IP',
     });
   },
 });
