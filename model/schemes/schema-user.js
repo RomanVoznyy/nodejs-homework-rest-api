@@ -36,6 +36,10 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    verificationToken: {
+      type: String,
+      require: [true, 'Verify your email'],
+    },
   },
   { versionKey: false, timestamps: true },
 );
